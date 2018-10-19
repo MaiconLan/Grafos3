@@ -64,7 +64,7 @@ public class Main {
 
         while (valorado.isEmpty() && orientado.isEmpty()){
             valorado = "s";
-            orientado = "n";
+            orientado = input("Grafo é orientado? (S/N)").toLowerCase().replace(" ", "");
         }
 
         grafo.setValorado(valorado.equals("s"));
@@ -251,7 +251,7 @@ public class Main {
         while (!PERM.isEmpty()) {
             Vertice verticePERM = PERM.get(0);
             Vertice verticeMenorCaminho = null;
-            for (Vertice adjacente : obterAdjacentes(arestas, verticePERM)) {
+            for (Vertice adjacente : obterAdjacentes(grafo.isOrientado(), arestas, verticePERM)) {
                 if(adjacente.getCor().equals(VISITADO))
                     continue;
 
@@ -263,13 +263,13 @@ public class Main {
                 else if(verticeMenorCaminho.getValor() > adjacente.getValor())
                     verticeMenorCaminho = adjacente;
 
+                if(verticeMenorCaminho != null)
+                    PERM.add(verticeMenorCaminho);
+
             }
 
             verticePERM.setCor(VISITADO);
             PERM.remove(verticePERM);
-
-            if(verticeMenorCaminho != null)
-                PERM.add(verticeMenorCaminho);
         }
 
         for (Vertice vertice : vertices) {
@@ -281,14 +281,14 @@ public class Main {
         output(resultado, "Distância e caminho entre vértices.");
     }
 
-    private static List<Vertice> obterAdjacentes(List<Aresta> arestas, Vertice vertice){
+    private static List<Vertice> obterAdjacentes(boolean orientado, List<Aresta> arestas, Vertice vertice){
         List<Vertice> ajdacentes = new ArrayList<>();
 
         for (Aresta aresta : arestas) {
             if(aresta.getOrigem().equals(vertice)) {
                 ajdacentes.add(aresta.getDestino());
 
-            } else if (aresta.getDestino().equals(vertice)) {
+            } else if (!orientado && aresta.getDestino().equals(vertice)) {
                 ajdacentes.add(aresta.getOrigem());
             }
         }
