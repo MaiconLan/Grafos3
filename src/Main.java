@@ -30,6 +30,7 @@ public class Main {
 
                 case 3:
                     adicionarArestaDireto(grafo);
+                    definirVerticeInicial(grafo);
                     break;
 
                 case 4:
@@ -190,43 +191,6 @@ public class Main {
         }
         output("Vértice não encontrado.", "Erro");
         return null;
-    }
-
-    public static Set<Aresta> getArestasSemVerticeOrigemDestinoAoContrario(Grafo grafo) {
-        Set<Aresta> arestas = new HashSet<>();
-
-        for (Aresta aresta : grafo.getArestas()) {
-            Aresta arestaContraria = new Aresta(aresta.getDestino(), aresta.getOrigem());
-            if(grafo.getArestas().contains(aresta) && grafo.getArestas().contains(arestaContraria))
-                arestas.add(aresta);
-        }
-
-        return arestas;
-    }
-
-    public static Set<Aresta> getArestasSemVerticeDuplicados(Grafo grafo) {
-        Set<Aresta> arestas = new HashSet<>();
-
-        for (Aresta aresta : grafo.getArestas()) {
-            Aresta arestaContraria = new Aresta(aresta.getDestino(), aresta.getOrigem());
-            if(!(arestas.contains(aresta) || arestas.contains(arestaContraria))) {
-                aresta.setNome("e"+(arestas.size()+1));
-                arestas.add(aresta);
-            }
-        }
-
-        return arestas;
-    }
-
-    private static void listarValoresArestas(Grafo grafo) {
-        String listaArestas = getConfiguracoes(grafo) + " \n\n";
-
-        for (Aresta aresta : grafo.getArestas()) {
-            listaArestas += "[" + aresta.getOrigem() + ", " + aresta.getDestino();
-            listaArestas += grafo.isValorado() ?  ", " + aresta.getValor() + "]\n" : "]\n";
-        }
-
-        output(listaArestas, "Lista de Arestas");
     }
 
     private static void listaArestas(Grafo grafo) {
